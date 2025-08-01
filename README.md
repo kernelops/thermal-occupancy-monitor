@@ -35,6 +35,7 @@ The project implements a two-stage development approach:
 
 ### Masking Feature Implementation
 ![Image Mask](image-mask.png)
+
 *Snapshot demonstrating the masking feature implementation for static object suppression*
 
 ### System Architecture
