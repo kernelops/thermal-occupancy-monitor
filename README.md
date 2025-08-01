@@ -1,6 +1,6 @@
 # Thermal Sensor-Based People Counting System
 
-A real-time people counting system using thermal sensors with embedded processing on ESP32 and visualization on a laptop. This project implements a two-stage system for enhanced privacy and real-time occupancy monitoring.
+A real-time people counting system using thermal sensors (AMG8833 Grid-Eye) with embedded processing on ESP32 and visualization on a laptop. This project implements a two-stage system for enhanced privacy and real-time occupancy monitoring.
 
 ## 📋 Project Overview
 
@@ -29,10 +29,21 @@ The project implements a two-stage development approach:
 
 ## 🖼️ Visual Documentation
 
-- **`hardware-setup.jpg`**: Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections
-- **`image-mask.png`**: Snapshot demonstrating the masking feature implementation
-- **`methodology-architecture.png`**: Two-stage system development diagram
-- **`output-visualization.jpeg`**: Visualization of the step-by-step algorithmic pipeline
+### Hardware Setup
+![Hardware Setup](hardware-setup.jpg)
+*Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections*
+
+### Masking Feature Implementation
+![Image Mask](image-mask.png)
+*Snapshot demonstrating the masking feature implementation for static object suppression*
+
+### System Architecture
+![Methodology Architecture](methodology-architecture.png)
+*Two-stage system development diagram showing server-dependent configuration and final embedded system*
+
+### Algorithm Pipeline Visualization
+![Output Visualization](output-visualization.jpeg)
+*Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
 
 ## 📊 Dataset
 
