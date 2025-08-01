@@ -297,9 +297,9 @@ JACCARD_THRESHOLD_CP = 0.25        # Jaccard index threshold
 
 ## 📝 Authors
 
-1. Nishant V H
-2. Suhas Papanashi  
-3. Manojith Bhat
+1. [Nishant V H](https://github.com/NishantHegde2305)
+2. [Suhas Papanashi](https://github.com/suhas-333)  
+3. [Manojith Bhat](https://github.com/ManojithBhat)
 
 ## 📄 License
 
