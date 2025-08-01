@@ -29,6 +29,10 @@ The project implements a two-stage development approach:
 
 ## 🖼️ Visual Documentation
 
+### Algorithm Pipeline Visualization
+![Output Visualization](output-visualization.jpeg)
+*Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
+
 ### Hardware Setup
 ![Hardware Setup](hardware-setup.jpg)
 *Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections*
@@ -41,10 +45,6 @@ The project implements a two-stage development approach:
 ### System Architecture
 ![Methodology Architecture](methodology-architecture.png)
 *Two-stage system development diagram showing server-dependent configuration and final embedded system*
-
-### Algorithm Pipeline Visualization
-![Output Visualization](output-visualization.jpeg)
-*Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
 
 ## 📊 Dataset
 
