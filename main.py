@@ -3,6 +3,7 @@
 # 1. Nishant V H
 # 2. Suhas Papanashi
 # 3. Manojith Bhat 
+# RV College of Engineering, Bengaluru, India
 ########################################
 import cv2
 import numpy as np
@@ -16,7 +17,7 @@ from flask import Flask, request, jsonify
 from gevent.pywsgi import WSGIServer
 
 ########################################
-# Custom Colormap Functions
+# Custom Colormap Function
 ########################################
 
 def create_custom_thermal_colormap_custom():
@@ -30,17 +31,14 @@ def create_custom_thermal_colormap_custom():
     """
     colormap = np.zeros((256, 1, 3), dtype=np.uint8)
     
-    # 0 to 50: White
     for i in range(0, 51):
         colormap[i] = [255, 255, 255]
     
-    # 51 to 100: White -> Pure Cyan (255,255,0)
     for i in range(51, 101):
         t = (i - 51) / (100 - 51)
         r = int(255 * (1 - t) + 0 * t)
         colormap[i] = [255, 255, r]
     
-    # 101 to 150: Pure Cyan (255,255,0) -> Darker Cyan (150,150,0)
     for i in range(101, 151):
         t = (i - 101) / (150 - 101)
         b = int(255 * (1 - t) + 150 * t)
@@ -48,15 +46,13 @@ def create_custom_thermal_colormap_custom():
         r = 0
         colormap[i] = [b, g, r]
     
-    # 151 to 200: Darker Cyan (150,150,0) -> Pink (230,130,200)
     for i in range(151, 201):
         t = (i - 151) / (200 - 151)
         b = int(150 * (1 - t) + 230 * t)
         g = int(150 * (1 - t) + 130 * t)
         r = int(0 * (1 - t) + 200 * t)
         colormap[i] = [b, g, r]
-    
-    # 201 to 255: Pink (230,130,200) -> Darkest Deep Pink (147,20,255)
+
     for i in range(201, 256):
         t = (i - 201) / (255 - 201)
         b = int(230 * (1 - t) + 147 * t)
@@ -69,17 +65,15 @@ def create_custom_thermal_colormap_custom():
 custom_cmap1 = create_custom_thermal_colormap_custom()
 
 ########################################
-# Global variable for sensor data
+# Global variables for sensor data
 ########################################
 
 latest_thermal_data = np.zeros((8, 8), dtype=np.float32)
 latest_dht_temp = 0.0
 
 ########################################
-# CSV Data Export Setup (With Auto-Incrementing Filenames)
+# CSV Data Export Setup Functions
 ########################################
-
-import os # Required for file system operations
 
 def get_next_run_number(base_filename="data"):
     """
@@ -105,8 +99,6 @@ def get_next_run_number(base_filename="data"):
         return max(existing_nums) + 1
 
 # --- Initialization Code ---
-# This code runs only once when the script starts.
-
 # 1. Determine the filename for this specific run
 run_number = get_next_run_number()
 log_filename = f"data_{run_number}.csv"
@@ -120,11 +112,6 @@ csv_writer.writerow(["record_id", "timestamp", "dht_temperature", "gridEye_array
 
 
 def export_data(sensor_frame, dht_temp, current_people, current_objects):
-    """
-    This function remains unchanged. It writes a row of data to the
-    globally defined csv_writer, which now points to the correctly
-    numbered file for this run.
-    """
     global record_id
     record_id += 1
     timestamp = datetime.datetime.now().isoformat()
@@ -163,7 +150,7 @@ def run_flask_server():
     http_server.serve_forever()
 
 ########################################
-# 1. Data Acquisition and Upscaling
+# 1. Data Upscaling
 ########################################
 
 def interpolate8to71(input_array):
@@ -272,7 +259,7 @@ def normalize_with_baseline(img, baseline_temp):
     return ((img - min_val) / (max_val - min_val) * 255).clip(0, 255).astype(np.uint8)
 
 ########################################
-# 7. NEW: Integrated Visualization Dashboard
+# 7. Integrated Visualization Dashboard
 ########################################
 
 def create_combined_visualization(raw_sensor_frame, interp_img, bin_mask, all_blobs_info, tracked_objs, final_img, stats):
@@ -415,7 +402,9 @@ OBJECT_STATIC_FRAME_THRESHOLD = 100
 MAX_MOVEMENT_THRESHOLD = 0.5
 MIN_MOVEMENT_FOR_RESET = 2.0
 DILATION_PIXELS = 2
+DRIFT_WINDOW_FRAMES = 15
 persistent_info = {}
+static_counters = {} 
 
 def compute_locked_mask(centroid, size, dilation_pixels=DILATION_PIXELS):
     mask = np.zeros((71, 71), dtype=np.uint8)
@@ -425,27 +414,55 @@ def compute_locked_mask(centroid, size, dilation_pixels=DILATION_PIXELS):
     return mask
 
 def update_persistent_objects(tracked_objects_list):
-    global persistent_info
+    global persistent_info, static_counters
     current_persistent_ids = set(persistent_info.keys())
     active_track_ids = {id(obj) for obj in tracked_objects_list}
+
+    # Remove info for objects that are no longer tracked
     ids_to_remove = current_persistent_ids - active_track_ids
     for obj_id_remove in ids_to_remove:
         del persistent_info[obj_id_remove]
+    
+    # Remove counters for inactive tracks
+    counters_to_remove = set(static_counters.keys()) - active_track_ids
+    for c_id in counters_to_remove:
+        del static_counters[c_id]
 
     for obj in tracked_objects_list:
         obj_id = id(obj)
         if obj_id in persistent_info:
+            # If already persistent, check if it has moved significantly to reset
             locked_centroid = persistent_info[obj_id]["locked_centroid"]
             dist = math.sqrt((obj.pos[0] - locked_centroid[0])**2 + (obj.pos[1] - locked_centroid[1])**2)
             if dist > MIN_MOVEMENT_FOR_RESET:
                 del persistent_info[obj_id]
+                if obj_id in static_counters:
+                    del static_counters[obj_id]
         else:
-            if len(obj.path) >= OBJECT_STATIC_FRAME_THRESHOLD:
-                initial_pos_in_window = obj.path[-OBJECT_STATIC_FRAME_THRESHOLD]
-                dist = math.sqrt((obj.pos[0] - initial_pos_in_window[0])**2 + (obj.pos[1] - initial_pos_in_window[1])**2)
+            # Check if object has enough history for drift comparison
+            if len(obj.path) >= DRIFT_WINDOW_FRAMES:
+                # Compare current position to DRIFT_WINDOW_FRAMES ago
+                past_pos = obj.path[-DRIFT_WINDOW_FRAMES]
+                dist = math.sqrt((obj.pos[0] - past_pos[0])**2 + (obj.pos[1] - past_pos[1])**2)
+                
                 if dist < MAX_MOVEMENT_THRESHOLD:
-                    locked_mask = compute_locked_mask(obj.pos, obj.size)
-                    persistent_info[obj_id] = { "locked_centroid": obj.pos, "locked_mask": locked_mask }
+                    # Increment consecutive static counter
+                    static_counters[obj_id] = static_counters.get(obj_id, 0) + 1
+                    
+                    # If reached threshold, mark as persistent
+                    if static_counters[obj_id] >= OBJECT_STATIC_FRAME_THRESHOLD:
+                        locked_mask = compute_locked_mask(obj.pos, obj.size)
+                        persistent_info[obj_id] = {
+                            "locked_centroid": obj.pos,
+                            "locked_mask": locked_mask
+                        }
+                        del static_counters[obj_id]  # Clean up counter
+                else:
+                    # Movement detected, reset counter
+                    static_counters[obj_id] = 0
+            else:
+                # Not enough history yet
+                static_counters[obj_id] = 0
 
 def generate_combined_persistent_mask():
     combined_mask = np.zeros((71, 71), dtype=np.uint8)
@@ -490,7 +507,6 @@ def main():
         
         unmatched_blobs = list(range(len(current_detected_blobs_info)))
 
-        # Phase 1: Centroid Matching
         for i, obj in enumerate(tracked_objects):
             if not unmatched_blobs: break
             best_blob_idx, best_distance_centroid = -1, float('inf')
@@ -504,15 +520,12 @@ def main():
                 matched_blob_info = current_detected_blobs_info[matched_blob_orig_idx]
                 obj.update(matched_blob_info['centroid'], matched_blob_info['size'], matched_blob_info['central_points'])
 
-        # Phase 2: Jaccard Index Matching
         remaining_tracked_objects_indices = [i for i, obj in enumerate(tracked_objects) if not obj.updated]
         temp_unmatched_blobs_info = [current_detected_blobs_info[i] for i in unmatched_blobs]
         for track_idx in remaining_tracked_objects_indices:
             obj = tracked_objects[track_idx]
             best_jaccard_blob_info, best_jaccard_score = None, 0.0
             for blob_info_item in temp_unmatched_blobs_info:
-                # FIX: Corrected check for non-empty numpy arrays to avoid ValueError.
-                # The truth value of a multi-element array is ambiguous. Use .size > 0 instead.
                 obj_cp = obj.central_points if obj.central_points.size > 0 else np.array([])
                 blob_cp = blob_info_item['central_points'] if blob_info_item['central_points'].size > 0 else np.array([])
                 
@@ -525,7 +538,6 @@ def main():
                 obj.update(best_jaccard_blob_info['centroid'], best_jaccard_blob_info['size'], best_jaccard_blob_info['central_points'])
                 temp_unmatched_blobs_info = [b for b in temp_unmatched_blobs_info if b is not best_jaccard_blob_info]
 
-        # Phase 3: Create new tracks
         current_blob_centroids_for_new_tracks = {tuple(b['centroid']) for b in temp_unmatched_blobs_info}
         for orig_idx in unmatched_blobs:
             if tuple(current_detected_blobs_info[orig_idx]['centroid']) in current_blob_centroids_for_new_tracks:
@@ -533,13 +545,11 @@ def main():
                 new_obj = HumanObject(label=0, pos=blob_info['centroid'], size=blob_info['size'], central_points=blob_info['central_points'])
                 tracked_objects.append(new_obj)
         
-        # Prune stale tracks
         new_tracked_objects_list = [obj for obj in tracked_objects if obj.updated or obj.virtual_age < 3]
         for obj in tracked_objects:
             if not obj.updated: obj.virtual_propagate()
         tracked_objects[:] = new_tracked_objects_list
         
-        # Static object handling
         update_persistent_objects(tracked_objects)
         persistent_mask = generate_combined_persistent_mask()
         final_img = np.copy(interp_img)
@@ -584,6 +594,5 @@ if __name__ == "__main__":
     
     main()
     
-    # Cleanup
     cv2.destroyAllWindows()
     csv_file.close()
