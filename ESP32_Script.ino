@@ -21,13 +21,11 @@
  *
  * This script performs computations analogous to the Python version:
  * - Interpolates an 8×8 thermal grid to 71×71.
- * - Thresholds the image using (DHT temperature + 0.1) as threshold.
  * - Extracts blob features via flood-fill, computes a Manhattan distance transform,
  *   and detects a central point.
- * - Tracks objects using centroid matching with a threshold of 25 and a crossing boundary at row 35.
+ * - Tracks objects using centroid matching with a threshold of 25.
  * - Normalizes the image with a baseline (DHT temperature – 8).
- * - Detects persistent (static/hot) objects using similar thresholds as in the Python script.
- *
+ * - Detects persistent (static/hot) objects using similar thresholds as in the Python script. 
  * Ensure the required libraries (Wire, WiFi, Adafruit_AMG88xx, DHT, ArduinoJson) are installed.
  */
 
