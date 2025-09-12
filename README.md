@@ -30,20 +30,20 @@ The project implements a two-stage development approach:
 ## 🖼️ Visual Documentation
 
 ### Algorithm Pipeline Visualization
-![Output Visualization](output-visualization.jpeg)
+![Output Visualization](Images/output-visualization.jpeg)
 *Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
 
 ### Hardware Setup
-![Hardware Setup](hardware-setup.jpg)
+![Hardware Setup](Images/hardware-setup.jpg)
 *Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections*
 
 ### Masking Feature Implementation
-![Image Mask](image-mask.png)
+![Image Mask](Images/image-mask.png)
 
 *Snapshot demonstrating the masking feature implementation for static object suppression*
 
 ### System Architecture
-![Methodology Architecture](methodology-architecture.png)
+![Methodology Architecture](Images/methodology-architecture.png)
 *Two-stage system development diagram showing server-dependent configuration and final embedded system*
 
 ## 📊 Dataset
@@ -312,3 +312,4 @@ Feel free to submit issues and enhancement requests. For major changes, please o
 ---
 
 **Note**: This system is designed for privacy-conscious applications where local processing is preferred over cloud-based solutions. The ESP32 implementation provides standalone operation while the Python server enables detailed analysis and visualization during development. 
+
