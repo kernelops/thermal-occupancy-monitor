@@ -1,5 +1,12 @@
 # Thermal Sensor-Based People Counting System
 
+> **📄 Published Research**: This work has been published in **IEEE Access**:
+>
+> **"A Lightweight, Real-Time Human Detection and Tracking System for Privacy-Preserving Occupancy Monitoring Using Low-Resolution Thermal Sensors"**
+> *IEEE Access, 2026*
+> DOI: [10.1109/ACCESS.2026.3658275](https://doi.org/10.1109/ACCESS.2026.3658275)
+> IEEE Xplore: [https://ieeexplore.ieee.org/abstract/document/11366245/](https://ieeexplore.ieee.org/abstract/document/11366245/)
+
 A real-time people counting system using thermal sensors (AMG8833 Grid-Eye) with embedded processing on ESP32 and visualization on a laptop. This project implements a two-stage system for enhanced privacy and real-time occupancy monitoring.
 
 ## 📋 Project Overview
@@ -30,20 +37,19 @@ The project implements a two-stage development approach:
 ## 🖼️ Visual Documentation
 
 ### Algorithm Pipeline Visualization
-![Output Visualization](Images/output-visualization.jpeg)
+
 *Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
 
 ### Hardware Setup
-![Hardware Setup](Images/hardware-setup.jpg)
+
 *Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections*
 
 ### Masking Feature Implementation
-![Image Mask](Images/image-mask.png)
 
 *Snapshot demonstrating the masking feature implementation for static object suppression*
 
 ### System Architecture
-![Methodology Architecture](Images/methodology-architecture.png)
+
 *Two-stage system development diagram showing server-dependent configuration and final embedded system*
 
 ## 📊 Dataset
@@ -295,10 +301,24 @@ JACCARD_THRESHOLD_CP = 0.25        # Jaccard index threshold
 - **Network Latency**: Optimize WiFi signal strength
 - **Visualization FPS**: Adjust `cv2.waitKey(50)` in Python code
 
+## 📝 Citation
+
+If you use this project or dataset in your research, please cite our IEEE Access paper:
+
+```bibtex
+@article{hegde2026lightweight,
+  title     = {A Lightweight, Real-Time Human Detection and Tracking System for Privacy-Preserving Occupancy Monitoring Using Low-Resolution Thermal Sensors},
+  journal   = {IEEE Access},
+  year      = {2026},
+  doi       = {10.1109/ACCESS.2026.3658275},
+  url       = {https://ieeexplore.ieee.org/abstract/document/11366245/}
+}
+```
+
 ## 📝 Authors
 
-1. [Nishant V H](https://github.com/NishantHegde2305)
-2. [Suhas Papanashi](https://github.com/suhas-333)  
+1. [Nishant Hegde](https://github.com/NishantHegde2305)
+2. [Suhas Papanashi](https://github.com/suhas-333)
 3. [Manojith Bhat](https://github.com/ManojithBhat)
 
 ## 📄 License
@@ -309,7 +329,6 @@ This project is developed for educational and research purposes.
 
 Feel free to submit issues and enhancement requests. For major changes, please open an issue first to discuss what you would like to change.
 
----
+***
 
-**Note**: This system is designed for privacy-conscious applications where local processing is preferred over cloud-based solutions. The ESP32 implementation provides standalone operation while the Python server enables detailed analysis and visualization during development. 
-
+**Note**: This system is designed for privacy-conscious applications where local processing is preferred over cloud-based solutions. The ESP32 implementation provides standalone operation while the Python server enables detailed analysis and visualization during development.
