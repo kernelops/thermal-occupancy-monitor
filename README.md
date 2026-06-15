@@ -34,27 +34,17 @@ The project implements a two-stage development approach:
 - Minimal data transmission
 - Standalone operation with LED indicators
 
-## 🖼️ Visual Documentation
-
-### Algorithm Pipeline Visualization
-
-*Visualization of the step-by-step algorithmic pipeline showing the 6-panel dashboard with real-time processing*
-
-### Hardware Setup
-
-*Complete hardware setup showing ESP32, AMG8833 sensor, and DHT11 sensor connections*
-
-### Masking Feature Implementation
-
-*Snapshot demonstrating the masking feature implementation for static object suppression*
-
-### System Architecture
-
-*Two-stage system development diagram showing server-dependent configuration and final embedded system*
 
 ## 📊 Dataset
 
 The project includes a comprehensive dataset recorded in a **confined study pod environment** with dimensions **2.20m × 1.05m × 2.10m**. The dataset contains recordings for different occupancy scenarios:
+
+> **🗄️ Dataset Published on IEEE Dataport**:
+>
+> **"Grid-EYE Dataset for Human Occupancy Detection and Counting in a Study Pod"**
+> *IEEE Dataport*
+> DOI: [10.21227/0pwe-g126](https://dx.doi.org/10.21227/0pwe-g126)
+> IEEE Dataport: [https://ieee-dataport.org/documents/grid-eye-dataset-human-occupancy-detection-and-counting-study-pod](https://ieee-dataport.org/documents/grid-eye-dataset-human-occupancy-detection-and-counting-study-pod)
 
 ### Dataset Structure
 - **`0 persons/`**: Empty room baseline recordings
@@ -303,8 +293,9 @@ JACCARD_THRESHOLD_CP = 0.25        # Jaccard index threshold
 
 ## 📝 Citation
 
-If you use this project or dataset in your research, please cite our IEEE Access paper:
+If you use this project or dataset in your research, please cite our IEEE Access paper and the IEEE Dataport dataset:
 
+**Research Paper:**
 ```bibtex
 @article{hegde2026lightweight,
   title     = {A Lightweight, Real-Time Human Detection and Tracking System for Privacy-Preserving Occupancy Monitoring Using Low-Resolution Thermal Sensors},
@@ -315,10 +306,21 @@ If you use this project or dataset in your research, please cite our IEEE Access
 }
 ```
 
+**Dataset:**
+```bibtex
+@data{hegde2026grideye,
+  title     = {Grid-EYE Dataset for Human Occupancy Detection and Counting in a Study Pod},
+  publisher = {IEEE Dataport},
+  year      = {2026},
+  doi       = {10.21227/0pwe-g126},
+  url       = {https://ieee-dataport.org/documents/grid-eye-dataset-human-occupancy-detection-and-counting-study-pod}
+}
+```
+
 ## 📝 Authors
 
 1. [Nishant Hegde](https://github.com/NishantHegde2305)
-2. [Suhas Papanashi](https://github.com/suhas-333)
+2. [Suhas Papanashi](https://github.com/suhas-333)  
 3. [Manojith Bhat](https://github.com/ManojithBhat)
 
 ## 📄 License
